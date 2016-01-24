@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"target": "es3",
+		"module": "commonjs",
+		"noImplicitAny": true,
+		"removeComments": true,
+		"preserveConstEnums": true,
+		"out": "build/tsrefwalker.js",
+		"sourceMap": true,
+		"sourceRoot": "../source"
+	},
+	"files": [
+		"source/tsrefwalker.ts"
+	]
+}
