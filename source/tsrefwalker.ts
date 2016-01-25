@@ -45,7 +45,8 @@ module TsRefWalker {
 					if (result.indexOf(f) < 0)
 						this.walk(f, result)
 				})
-			result.push(file)
+			if (!result.some(item => item == file))
+				result.push(file)
 			return result
 		}
 		private runHelper(command: string, commands: string[]) {
@@ -53,7 +54,7 @@ module TsRefWalker {
 				case "list":
 					var files = this.walk(commands.shift(), [])
 					var file: string
-					while (file = files.pop())
+					while (file = files.shift())
 						console.log(file)
 					break
 				case "version": console.log("writeup " + this.getVersion()); break
