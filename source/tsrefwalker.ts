@@ -19,7 +19,8 @@ module TsRefWalker {
 			return result
 		}
 		private walk(file: string, result: string[]) {
-			var path = file.match(/.*\//)[0]
+			var pathMatch = file.match(/.*\//)
+			var path = pathMatch && pathMatch.length == 1 ? pathMatch[0] : "./"
 			if (!file.match(/.ts/))
 				file = file + ".ts"
 			var content: string = fs.readFileSync(file, "utf-8")
@@ -56,6 +57,21 @@ module TsRefWalker {
 					var file: string
 					while (file = files.shift())
 						console.log(file)
+					break
+				case "update":
+					var configurationFile = "./tsconfig.json"
+					while ((command = commands.shift())[0] == "-")
+						switch (command) {
+							case "-c":
+							case "--config":
+								configurationFile = commands.shift()
+								break
+						}
+					var configuration = JSON.parse(fs.readFileSync(configurationFile))
+					configuration.files = this.walk(command, [])
+					var configurationContent = JSON.stringify(configuration, null, "\t")
+					console.log(configurationContent)
+					fs.writeFile(configurationFile, configurationContent)
 					break
 				case "version": console.log("writeup " + this.getVersion()); break
 				case "help": console.log("help"); break

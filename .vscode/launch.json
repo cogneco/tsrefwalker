@@ -21,6 +21,25 @@
 			"outDir": "build"
 		},
 		{
+			"name": "update",
+			"type": "node",
+			"request": "launch",
+			"program": "build/tsrefwalker.js",
+			"stopOnEntry": false,
+			"args": ["update", "root.ts"],
+			"cwd": "./source/Test/data/",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": true,
+			"outDir": "build"
+		},
+		{
 			"name": "Attach",
 			"type": "node",
 			"request": "attach",
