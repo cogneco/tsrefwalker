@@ -74,7 +74,11 @@ module TsRefWalker {
 					fs.writeFile(configurationFile, configurationContent)
 					break
 				case "version": console.log("writeup " + this.getVersion()); break
-				case "help": console.log("help"); break
+				case "help": console.log("help")
+					console.log("tsrefwalker list [root.ts]")
+					console.log("tsrefwalker update [root.ts]")
+					console.log("tsrefwalker update --config [path/to/tsconfig.ts] [root.ts]")
+					break
 				default:
 					commands.push(command)
 					command = undefined
