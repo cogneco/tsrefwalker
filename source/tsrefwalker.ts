@@ -4,7 +4,7 @@ var fs = require("fs")
 
 module TsRefWalker {
 	export class Program {
-		private defaultCommand = "list"
+		private defaultCommand = "update"
 		constructor(private commands: string[]) {
 			this.commands = this.commands.slice(2)
 			if (this.commands.length == 0) {
