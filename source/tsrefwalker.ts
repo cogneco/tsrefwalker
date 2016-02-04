@@ -18,15 +18,13 @@ module TsRefWalker {
 				result.push(value)
 			return result
 		}
-		private walk(file: string, result: string[]) {
+		private walk(file: string, result: string[] = []) {
 			var pathMatch = file.match(/.*\//)
 			var path = pathMatch && pathMatch.length == 1 ? pathMatch[0] : "./"
-			if (!file.match(/.ts/))
-				file = file + ".ts"
-			var content: string = fs.readFileSync(file, "utf-8")
+			var content = fs.readFileSync(file, "utf-8")
 			var matches = content.match(/\/\/\/ <reference path="(.*)" \/>/g)
 			if (matches)
-				matches.forEach((match) => {
+				matches.forEach((match: string) => {
 					var f = match.match(/".*"/)[0].slice(1, -1)
 					if (f[0] != "/")
 						f = path + f
@@ -43,8 +41,32 @@ module TsRefWalker {
 							r = true
 						return r
 					}).concat(this.createArray("..", skip)).reverse().join("/")
-					if (result.indexOf(f) < 0)
-						this.walk(f, result)
+					if (result.indexOf(f) < 0) {
+						var actual = f
+						if (!f.match(/.ts/))
+							f = f + ".ts"
+						try {
+							if (!fs.statSync(f).isFile() || result.indexOf(f) >= 0)
+								f = undefined
+						} catch (_) {
+							f = f.slice(-2)
+							try {
+								f = actual + ".js"
+								if (!fs.statSync(f).isFile() || result.indexOf(f) >= 0)
+									f = undefined
+							} catch (_) {
+								f = actual + ".d.ts"
+								try {
+									fs.statSync(f).isFile()
+								} catch (_) {
+									console.error("Invalid reference \"" + actual + "\" found in \"" + file + "\".")
+								}
+								f = undefined
+							}
+						}
+						if (f)
+							this.walk(f, result)
+					}
 				})
 			if (!result.some(item => item == file))
 				result.push(file)
@@ -53,7 +75,7 @@ module TsRefWalker {
 		private runHelper(command: string, commands: string[]) {
 			switch (command) {
 				case "list":
-					var files = this.walk(commands.shift(), [])
+					var files = this.walk(commands.shift())
 					var file: string
 					while (file = files.shift())
 						console.log(file)
