@@ -43,7 +43,7 @@ module TsRefWalker {
 					}).concat(this.createArray("..", skip)).reverse().join("/")
 					if (!f.match(/.d.ts/) && result.indexOf(f) < 0) {
 						var actual = f
-						if (!f.match(/.ts/))
+						if (f.slice(-3) != ".ts" && f.slice(-3) != ".js")
 							f = f + ".ts"
 						try {
 							if (!fs.statSync(f).isFile() || result.indexOf(f) >= 0)
