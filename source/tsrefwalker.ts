@@ -41,7 +41,7 @@ module TsRefWalker {
 							r = true
 						return r
 					}).concat(this.createArray("..", skip)).reverse().join("/")
-					if (result.indexOf(f) < 0) {
+					if (!f.match(/.d.ts/) && result.indexOf(f) < 0) {
 						var actual = f
 						if (!f.match(/.ts/))
 							f = f + ".ts"
