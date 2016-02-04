@@ -40,6 +40,25 @@
 			"outDir": "build"
 		},
 		{
+			"name": "update writeup",
+			"type": "node",
+			"request": "launch",
+			"program": "build/tsrefwalker.js",
+			"stopOnEntry": false,
+			"args": ["update", "source/writeup.ts"],
+			"cwd": "../writeup/",
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": true,
+			"outDir": "build"
+		},
+		{
 			"name": "Attach",
 			"type": "node",
 			"request": "attach",
